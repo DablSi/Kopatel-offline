@@ -8,12 +8,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton btn_manual, btn_ontime, btn_auto;
     ProgressBar ground, air;
 
-    FloatingActionButton btn_water;
+    ImageView btn_water;
 
     @Override
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ground = (ProgressBar) findViewById(R.id.progressGroundHum);
         air = (ProgressBar) findViewById(R.id.progressAirHum);
 
-        btn_water = findViewById(R.id.btn_watering);
+        btn_water = (ImageView) findViewById(R.id.imageView);
 
         Handler handler = new Handler(){
             @Override
@@ -86,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 dataReceived.setText(mqttMessage.toString());
+                //Toast t = Toast.makeText(getApplicationContext(),mqttMessage.toString(),Toast.LENGTH_SHORT);
+                //t.show();
                 String[] answer = mqttMessage.toString().split(" ");
                 double d_temp = Double.valueOf(answer[0]);
                 double d_air_hum = Double.valueOf(answer[1]);
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(int opcode){
         Handler handler1 = new Handler();
 
-
+        Log.i("water", " on");
         handler1.postDelayed(new Runnable() {
             @Override
             public void run() {

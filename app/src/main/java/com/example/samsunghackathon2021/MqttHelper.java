@@ -126,13 +126,13 @@ public class MqttHelper {
             mqttAndroidClient.publish(subscriptionTopic, message,null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast toast = Toast.makeText(context, "publish succeed! ", Toast.LENGTH_SHORT) ;
+                    Toast toast = Toast.makeText(context, "succeed! ", Toast.LENGTH_SHORT) ;
                     toast.show();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast toast = Toast.makeText(context, "publish failed! ", Toast.LENGTH_SHORT) ;
+                    Toast toast = Toast.makeText(context, "failed! ", Toast.LENGTH_SHORT) ;
                     toast.show();
                 }
             });
