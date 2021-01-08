@@ -19,13 +19,13 @@ import static android.content.ContentValues.TAG;
 public class MqttHelper {
     public MqttAndroidClient mqttAndroidClient;
 
-    final String serverUri = "tcp://srv1.clusterfly.ru:9124";
+    final String serverUri = "tcp://m2.wqtt.ru:5631";
 
     final String clientId = "ExampleAndroidClient";
     String subscriptionTopic; //= "user_f70f4807/test/temp";
 
-    final String username = "user_f70f4807";
-    final String password = "pass_44cbb5b2";
+    final String username = "u_2CWPYH";
+    final String password = "716Q9lLe";
     Context context;
 
     public MqttHelper(Context context, String subscriptionTopic){
