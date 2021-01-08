@@ -2,17 +2,21 @@ package com.example.samsunghackathon2021;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -24,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
     MqttHelper mqttHelperPrefs, mqttHelperPomp;
 
     TextView dataReceived;
-    TextView temperature;
+    TextView temperature, percent1, percent2;
     RadioButton btn_manual, btn_ontime, btn_auto;
     ProgressBar ground, air;
 
-    ImageView btn_water;
+    FloatingActionButton btn_water;
+
+    ImageButton btn_settings;
 
     @Override
 
@@ -40,14 +46,18 @@ public class MainActivity extends AppCompatActivity {
         btn_manual = (RadioButton) findViewById(R.id.radio_manual);
         btn_ontime = (RadioButton) findViewById(R.id.radio_ontime);
         btn_auto = (RadioButton) findViewById(R.id.radio_auto);
+        percent1 = (TextView) findViewById(R.id.percent1);
+        percent2 = (TextView) findViewById(R.id.percent2);
         btn_manual.setOnClickListener(radioButtonClickListener);
         btn_ontime.setOnClickListener(radioButtonClickListener);
         btn_auto.setOnClickListener(radioButtonClickListener);
 
+        btn_settings = (ImageButton) findViewById(R.id.settings_button);
+
         ground = (ProgressBar) findViewById(R.id.progressGroundHum);
         air = (ProgressBar) findViewById(R.id.progressAirHum);
 
-        btn_water = (ImageView) findViewById(R.id.imageView);
+        btn_water = (FloatingActionButton) findViewById(R.id.btn_watering);
 
         Handler handler = new Handler(){
             @Override
@@ -66,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, PreferencesActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void startPrefsMqtt(String topic) {
@@ -97,7 +114,13 @@ public class MainActivity extends AppCompatActivity {
                 temperature.setText("+" + temp);
 
                 ground.setProgress(ground_hum);
+                percent1.setText(ground_hum+"%");
                 air.setProgress(air_hum);
+                percent2.setText(air_hum+"%");
+
+                if(ground_hum<20){
+                    sendMessage(4);
+                }
 
             }
 
@@ -141,10 +164,12 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             RadioButton rb = (RadioButton)v;
             clearRadioChecked();
+            btn_water.setVisibility(View.INVISIBLE);
             switch (rb.getId()) {
                 case R.id.radio_manual:
                     btn_manual.setChecked(!btn_manual.isChecked());
                     sendMessage(1);
+                    btn_water.setVisibility(View.VISIBLE);
                     break;
                 case R.id.radio_ontime:
                     btn_ontime.setChecked(!btn_ontime.isChecked());
