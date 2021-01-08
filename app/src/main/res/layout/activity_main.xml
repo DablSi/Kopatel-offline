@@ -79,33 +79,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_button" />
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progressBar"
+    <ProgressBar
+        android:id="@+id/progressGroundHum"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="260dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensors" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressAirHum"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="@+id/progressBar"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        android:layout_marginTop="68dp"
+        app:layout_constraintStart_toStartOf="@+id/progressGroundHum"
+        app:layout_constraintTop_toBottomOf="@+id/progressGroundHum" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginRight="156dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="164dp"
+        android:layout_marginRight="164dp"
         android:text="Режим полива"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sensors" />
@@ -120,5 +120,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/settings_button"
         app:srcCompat="@drawable/ic_drop" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:orientation="vertical">
+
+    <RadioButton
+        android:id="@+id/radio_manual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="440dp"
+        android:layout_weight="1"
+        android:checked="true"
+        android:text="Ручной"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/radio_ontime"
+        android:layout_width="match_parent"
+        android:text="По времени"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/radio_manual"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <RadioButton
+        android:id="@+id/radio_auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Автоматически"
+        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/radio_ontime"
+        tools:layout_editor_absoluteX="-15dp" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
