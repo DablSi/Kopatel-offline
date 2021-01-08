@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        temperature = (TextView) findViewById(R.id.temperature);
         dataReceived = (TextView) findViewById(R.id.dataReceived);
 
         Handler handler = new Handler(){
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("Debug", mqttMessage.toString());
                 dataReceived.setText(mqttMessage.toString());
                 String[] answer = mqttMessage.toString().split(" ");
-
+                temperature.setText(answer[0]);
             }
 
             @Override
