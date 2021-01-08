@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     MqttHelper mqttHelper;
 
     TextView dataReceived;
+    TextView temperature;
 
     @Override
 
@@ -28,15 +30,23 @@ public class MainActivity extends AppCompatActivity {
         Handler handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                startMqtt();
+                startMqtt("user_f70f4807/test/temp");
+
             }
         };
         handler.sendEmptyMessage(0);
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //mqttHelper.publishMessage("CAN YOU HEAR MEEE?");
+            }
+        },1000);
 
     }
 
-    private void startMqtt() {
-        mqttHelper = new MqttHelper(getApplicationContext(),"user_f70f4807/test/temp");
+    private void startMqtt(String topic) {
+        mqttHelper = new MqttHelper(getApplicationContext(),topic);
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -52,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug", mqttMessage.toString());
                 dataReceived.setText(mqttMessage.toString());
+                String[] answer = mqttMessage.toString().split(" ");
+
             }
 
             @Override
@@ -60,4 +72,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

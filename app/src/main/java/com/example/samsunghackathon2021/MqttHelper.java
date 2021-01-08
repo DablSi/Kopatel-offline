@@ -2,6 +2,7 @@ package com.example.samsunghackathon2021;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -13,6 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import static android.content.ContentValues.TAG;
+
 public class MqttHelper {
     public MqttAndroidClient mqttAndroidClient;
 
@@ -23,8 +26,10 @@ public class MqttHelper {
 
     final String username = "user_f70f4807";
     final String password = "pass_44cbb5b2";
+    Context context;
 
     public MqttHelper(Context context, String subscriptionTopic){
+        this.context=context;
         this.subscriptionTopic=subscriptionTopic;
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
@@ -107,6 +112,33 @@ public class MqttHelper {
         } catch (MqttException ex) {
             System.err.println("Exception whilst subscribing");
             ex.printStackTrace();
+        }
+    }
+    public void publishMessage(String payload) {
+        try {
+            if (mqttAndroidClient.isConnected() == false) {
+                mqttAndroidClient.connect();
+            }
+
+            MqttMessage message = new MqttMessage();
+            message.setPayload(payload.getBytes());
+            message.setQos(0);
+            mqttAndroidClient.publish(subscriptionTopic, message,null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast toast = Toast.makeText(context, "publish succeed! ", Toast.LENGTH_SHORT) ;
+                    toast.show();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast toast = Toast.makeText(context, "publish failed! ", Toast.LENGTH_SHORT) ;
+                    toast.show();
+                }
+            });
+        } catch (MqttException e) {
+            Log.e(TAG, e.toString());
+            e.printStackTrace();
         }
     }
 }
